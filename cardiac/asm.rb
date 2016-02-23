@@ -24,7 +24,8 @@ infilef.each_line do |line|
   end
   if line[0] == "ORG"
     puts "Skipped ORG opcode"
-    memcounter = line[1].to_i+3
+    memcounter = line[1].to_i
+    
     puts "memcounter=#{memcounter}"
     next
   end
