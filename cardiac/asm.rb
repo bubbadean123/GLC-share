@@ -25,8 +25,13 @@ infilef.each_line do |line|
   if line[0] == "ORG"
     puts "Skipped ORG opcode"
     memcounter = line[1].to_i
-    
     puts "memcounter=#{memcounter}"
+    next
+  end
+  if line[0] == "MEM"
+    puts "Address and data pair written"
+    outfilef.puts "%03d" % line[1]
+    outfilef.puts line[2].fix(3,"0")
     next
   end
   op=insset[line[0]].to_s
