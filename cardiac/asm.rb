@@ -22,12 +22,6 @@ infilef.each_line do |line|
     dat.push(line[1])
     next
   end
-  if line[0] == "ORG"
-    puts "Skipped ORG opcode"
-    memcounter = line[1].to_i
-    puts "memcounter=#{memcounter}"
-    next
-  end
   if line[0] == "MEM"
     puts "Address and data pair written"
     outfilef.puts "%03d" % line[1]

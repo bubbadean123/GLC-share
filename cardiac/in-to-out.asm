@@ -1,4 +1,3 @@
-ORG 00
 INP 06
 OUT 06
 JMP 03
