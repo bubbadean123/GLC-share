@@ -10,8 +10,12 @@ labeltable={}
 memcounter=3
 puts ".asm file:"
 infile = gets.chomp
-infilef=File.open("#{infile}.asm","r")
-outfilef=File.open("#{infile}.cards","w")
+unless infile.include? ".asm"
+  infile=infile+".asm"
+end
+outfile=infile.gsub(".asm",".cards")
+infilef=File.open(infile,"r")
+outfilef=File.open(outfile,"w")
 outfilef.puts "002"
 outfilef.puts "800"
 infilef.each_line do |line|

@@ -1,0 +1,7 @@
+<svg version="1.1" width="156" height="254" viewBox="-1 -1 156 254" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Exported by Scratch - http://scratch.mit.edu/ -->
+  <path id="ID0.8123555295169353" fill="none" stroke="#003FFF" stroke-width="2" d="M 183 90 L 337 90 L 337 313 L 183 313 L 183 90 Z " transform="matrix(0.9871794581413269, 0, 0, 1.1217948198318481, -179.65, -99.75)"/>
+  <path id="ID0.592889379709959" fill="none" stroke="#000000" stroke-width="2" d="M 295 96 L 318 96 L 318 119 L 295 119 L 295 96 Z " transform="matrix(1, 0, 0, 1, -169, -87.95)"/>
+  <text id="ID0.14270353224128485" fill="#000000" x="303" y="105.25" text-anchor="start" font-family="Helvetica" font-size="22" transform="matrix(1, 0, 0, 1, 129, 5.1)">X</text>
+  <text id="ID0.166274088434875" fill="#000000" x="182" y="110.25" text-anchor="start" font-family="Helvetica" font-size="22" transform="matrix(1, 0, 0, 1, 22, 1.1)">1xx-ADD2xx-SUB3xx-STO5xx-LDA6xx-BRA7xx-BRZ8xx-BRP901-INP902-OUT000-HLT</text>
+</svg>
