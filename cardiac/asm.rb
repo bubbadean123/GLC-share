@@ -20,7 +20,7 @@ outfilef.puts "002"
 outfilef.puts "800"
 infilef.each_line do |line|
   line=line.split(" ")
-  puts line.inspect
+  puts line.join(" ")
   if line[0] == "DAT"
     puts "Skipped DAT opcode"
     dat.push(line[1])
