@@ -1,3 +1,6 @@
+`include "register.v"
+`include "alu.v"
+`include "pc.v"
 module kt8_cpu(clk, rst, instruction, ram_in, code_address, data_address, ram_out, write, kd_reset);
   input clk, rst;
   input [7:0] instruction;
@@ -13,7 +16,7 @@ module kt8_cpu(clk, rst, instruction, ram_in, code_address, data_address, ram_ou
   reg [7:0] ivalue; 
   wire [7:0] b_input;
   reg load_a, load_b, load_r, jump_up, jump_down, b_immediate;
-  reg [7:0] alu_out
+  reg [7:0] alu_out;
   
   program_counter PC(clk, rst, jump_up, jump_down, ivalue[3:0], code_address);
   instruction_decoder(instruction, r_zero, load_a, load_b, load_r, jump_up, jump_dowm, b_immediate, ivalue );

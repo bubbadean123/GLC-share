@@ -25,7 +25,8 @@ module register_tb();
 
    initial begin
      $monitor ("clk=%b,reset=%b,en=%b,in=%b,out=%b",clk, reset, en, in, out);
-				
+     $dumpfile ("a.dump");
+     $dumpvars;				
      #1 in=10; en=1; clk=1;
      #1 in=0; en=0; clk=0;
      #1 if (out!=10) $error("Failed Load"); 
