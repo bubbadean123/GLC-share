@@ -1,5 +1,5 @@
 if test $# -eq 0; then
-    echo "Usage: verilog [OPTIONS]... FILE"
+    echo "Usage: verilog [OPTIONS]... FILE [DUMPFILE]"
     echo "-h: Display this help"
 elif test $1 == "-h"; then
     echo "Usage: verilog [OPTIONS]... FILE [DUMPFILE]"
