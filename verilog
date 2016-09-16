@@ -1,13 +1,11 @@
-if test "$#" -eq 0; then
+if test $# -eq 0; then
     echo "Usage: verilog [OPTIONS]... FILE"
     echo "-h: Display this help"
-    echo "-d: specify a gtkwave dump file to open"
 elif test $1 == "-h"; then
-    echo "Usage: verilog [OPTIONS]... FILE"
+    echo "Usage: verilog [OPTIONS]... FILE [DUMPFILE]"
     echo "-h: Display this help"
-    echo "-d: specify a gtkwave dump file to open"
-elif test $1 == "-d"; then
-    iverilog $3
+elif test $# -eq 2; then
+    iverilog $1
     vvp a.out
     gtkwave $2
 else
