@@ -1,6 +1,7 @@
 `include "register.v"
 `include "alu.v"
 `include "pc.v"
+`include "ins dec.v"
 module kt8_cpu(clk, rst, instruction, ram_in, code_address, data_address, ram_out, write, kd_reset);
   input clk, rst;
   input [7:0] instruction;
