@@ -26,7 +26,9 @@ module ram_tb();
 
    initial begin
      $monitor ("clk=%b,Address=%b,in=%b,out=%b,WE=%b,CS=%b",clk, Address, in, out, WE, CS);
-				
+	  $dumpfile("ram.dump");
+     $dumpvars();
+		
      #1 in=10; WE=1;
      #1 clk=1;
 	 #1 WE=0; in=0;

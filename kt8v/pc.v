@@ -1,4 +1,4 @@
-// Program Counter for KT8
+// Program Counter for kt8
 // CAK 2016
 // 8 bit counter with reset. Can also jump up or down
 // 0-16 counts.
@@ -30,7 +30,8 @@ module program_counter_tb();
    initial begin
      $monitor ("clk=%b,rst=%b,jump_up=%b,jump_down=%b,jump_dist=%b,out=%b", 
 	            clk, rst, jump_up, jump_down, jump_distance, out);
-				
+     $dumpfile("pc.dump");
+     $dumpvars();
      #5 clk=0; rst=1; jump_up=0; jump_down=0; jump_distance=0;
      //come out of reset and clock twice
      $display("Try increment");

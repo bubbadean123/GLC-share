@@ -18,7 +18,6 @@ module register_tb();
    reg reset=0;
    reg [7:0] in=0;
    wire [7:0] out;
-  
 
    //instantiate device under test
    register dut(clk, reset, en, in, out);
