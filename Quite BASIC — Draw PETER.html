@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Quite BASIC  &mdash; Draw PETER</title>
+<meta name="description" content="Quite BASIC is a web-based classic BASIC interpreter. It’s a learning resource but has also become a celebration to the early days of personal computing.">
+<style type="text/css">
+body {
+background-color: #000000;
+font-family: Helvetica,Arial,Sans-Serif; 
+font-size: 8pt;
+color: #EFAF20;
+width: 500px;
+}
+p {
+text-align: justify;
+}
+h1 {
+font-size: 18pt;
+color: #3FAF3F;
+}
+h2 {
+font-size: 10pt;
+color: #9F009F;
+}
+input, textarea {
+  font-family: Helvetica,Arial,Sans-Serif; 
+  font-size: 8pt;
+  color: #AFAFAF;
+  background-color: #000000;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+}
+input.submit {
+  font-weight: bold;
+  color: #EFAF20;
+}
+div#leftpane { 
+float: left;
+margin-right: 25px;
+width: 200px;
+}
+div#rightpane { 
+float: left;
+width: 200px;
+}
+</style>
+	
+</head>
+<body>
+  <h1>Quite BASIC Project</h1>
+  <form method="POST" action="http://www.quitebasic.com/user/" target="_top">
+  <div id="leftpane">
+    <p>This page contains your entire project, including the BASIC program 
+    (even though you can't see it).</p>
+    <h2>Saving</h2>
+    <p>Simply save this page from your <i>Browser</i>. The details are
+    different for different browsers, but it will be similar to right clicking and select "Save as..."</p>
+    <p>To stop the browser from wrapping lines, select to save as "Web page
+    only" or "HTML only".</p>
+    <p>This is an HTML document, so when you save the page, make sure you give
+    it an .html or .htm file extension.</p>
+    <p>Later you can open this project simply by opening the saved file in your
+    browser.  You will be automatically redirected to the www.quitebasic.com
+    site (if not, <input class="submit" type="submit"
+    Value="click here"/> to go to Quite BASIC).</p>
+    <h2>Publishing</h2>
+    <p>You can also publish this page on the web. All you need to do is upload
+    this page to your site and make a link to it.</p>
+  </div>
+  <div id="rightpane">
+    <h2>Title</h2>
+    <input name="title" value="Draw PETER" type="text" readonly="readonly" size="40"/>
+
+    <h2>Description</h2>
+    <textarea name="description" cols="30" rows="15" readonly="readonly"></textarea>
+
+    <textarea name="program" cols="0" rows="0"  wrap="off" style="visibility: hidden;">
+10 CLS
+20 LET L = 4
+30 LET X = 0
+40 LET Y = 99
+50 GOSUB 5100
+60 PRINT "X:"+X+", "+"Y:"+Y
+160 END
+5000 REM "HORIZONTAL LINE SUBROUTINE"
+5010 FOR I = X TO L
+5020 PLOT I, Y
+5030 NEXT I
+5040 RETURN
+5050 REM "VERTICAL LINE SUBROUTINE (ONLY WORKS WITH UP)"
+5060 FOR I = Y TO 99+L
+5070 PLOT X, I
+5080 NEXT I
+5090 RETURN
+5100 REM "P SUBROUTINE"
+5130 GOSUB 5000
+5140 LET Y = Y - L
+5150 GOSUB 5050
+5160 GOSUB 5000
+5170 LET X = X + L
+5180 GOSUB 5050
+5190 LET X = X - L
+5200 LET Y = Y - L
+5210 GOSUB 5050
+5250 RETURN    </textarea>  
+
+<br/>
+    <input name="canvas" value="100x100" type="hidden"/>
+  </div>
+  <script type="text/javascript">
+  if (!String(window.location).match(/quitebasic.com/)) document.forms[0].submit();
+  </script>
+  </form>
+
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1186139-1']);
+  _gaq.push(['_setDomainName', 'quitebasic.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script></body>
+</html>
