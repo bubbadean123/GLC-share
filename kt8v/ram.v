@@ -1,40 +1,25 @@
-module ram(clk, Address, in, out, WE, CS);
+//16 byte RAM used for KT8
 
-  input clk, WE, CS;
-  input [3:0] Address;
-  input [7:0] in;
-  output [7:0] out;  
+module ram (clk_i, 
+            address_i, 
+            in_i, 
+            out_o, 
+            we_i);
 
+  input clk_i, we_i;
+  input [3:0] address_i;
+  input [7:0] in_i;
+  output [7:0] out_o;  
+  //CK - Changed array to 0-15 from 15-0
+  //not sure if it matters, but this seems to be the standard
   reg [7:0] mem [0:15];
   
-  always @(posedge clk)
-    if (WE && CS) mem[Address]=in;
+  always @(posedge clk_i)
+    if (we_i) mem[address_i]=in_i;
     
-  assign out=CS ? mem[Address]: 8'bzzzzzzzz;
+  //output is not clocked, always reflects current memory addresses
+  assign out_o=mem[address_i];
 
 endmodule
 
-module ram_tb();
-   reg clk=0, WE=0, CS=1;
-   reg [3:0] Address=0;
-   reg [7:0] in=0;
-   wire [7:0] out;
-  
 
-   //instantiate device under test
-   ram dut(clk, Address, in, out, WE, CS);
-
-   initial begin
-     $monitor ("clk=%b,Address=%b,in=%b,out=%b,WE=%b,CS=%b",clk, Address, in, out, WE, CS);
-	  $dumpfile("ram.dump");
-     $dumpvars();
-		
-     #1 in=10; WE=1;
-     #1 clk=1;
-	 #1 WE=0; in=0;
-     #1 if (out!=10) $error("Failed Store"); 
-     else $display("Successful Store");
-     #1 CS=0;
-     #1 CS=1;
-   end
-endmodule

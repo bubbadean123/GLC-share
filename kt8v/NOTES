@@ -1,0 +1,4 @@
+top level testbench is kt8.v
+
+need to change testprog.txt and number of repeat cycles
+to test different programs

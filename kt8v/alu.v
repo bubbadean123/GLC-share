@@ -1,26 +1,29 @@
-module alu(a,b,r,op);
+module alu(a_i,
+           b_i,
+           op_i,
+           r_o );
+  input [7:0] a_i, b_i;
+  input [3:0] op_i;
+  output [7:0] r_o;
 
-input [7:0] a,b;
-output reg [7:0] r;
-input [3:0] op;
-
-always @(a,b,op)
-   case(op)
-      0:r=a+b;
-      1:r=a-b;
-      2:r=a&b;
-      3:r=a|b;
-      4:r=a^b;
-      5:r=~a;
-      6:r=~b;
-      7:r=a;
-      8:r=b;
-      9:r=a<<1;
-      10:r=a>>1;
-      11:r=0;
-      12:r=a+1;
-      13:r=a-1;
-      default:r=8'bxxxx_xxxx;
+  reg [7:0] r_o;
+					   
+  always @(*)
+    case (op_i)
+      0: r_o=a_i+b_i;
+      1: r_o=a_i-b_i;
+      2: r_o=a_i&b_i;
+      3: r_o=a_i|b_i;
+      4: r_o=a_i^b_i;
+      5: r_o=~a_i;
+      6: r_o=~b_i;
+      7: r_o=a_i;
+      8: r_o=b_i;
+      9: r_o=a_i<<1;
+     10: r_o=a_i>>1;
+     11: r_o=a_i+1;
+     12: r_o=a_i-1;
+     default: r_o=0;
    endcase
-
 endmodule
+

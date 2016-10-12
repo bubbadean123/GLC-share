@@ -1,38 +1,81 @@
-`include "register.v"
-`include "alu.v"
+//The KT8 CPU core, not including program memory or RAM
+
 `include "pc.v"
-`include "ins dec.v"
-module kt8_cpu(clk, rst, instruction, ram_in, code_address, data_address, ram_out, write, kd_reset);
-  input clk, rst;
-  input [7:0] instruction;
-  input [7:0] ram_in;
-  output [7:0] code_address;
-  output [7:0] data_address;
-  output [7:0] ram_out;
-  output write, kd_reset;
+`include "datareg.v"
+`include "alu.v"
+`include "program_control.v"
+`include "data_control.v"
+module cpu(clk_i,
+           rst_i,
+	   p_address_o,
+           p_data_i,
+           ram_address_o,
+           ram_data_i,
+	   ram_data_o,
+	   ram_we_o );
+  input clk_i, rst_i;
+  input [7:0] p_data_i;
+  input [7:0] ram_data_i;
+  output [7:0] p_address_o;
+  output [4:0] ram_address_o;
+  output [7:0] ram_data_o;
+  output ram_we_o;
 
-  //internal_signals
-  wire r_zero;
-  //decoder numeric output, reg value, jump distance, or ALU op code
-  reg [7:0] ivalue; 
-  wire [7:0] b_input;
-  reg load_a, load_b, load_r, jump_up, jump_down, b_immediate;
-  reg [7:0] alu_out;
-  
-  program_counter PC(clk, rst, jump_up, jump_down, ivalue[3:0], code_address);
-  instruction_decoder(instruction, r_zero, load_a, load_b, load_r, jump_up, jump_dowm, b_immediate, ivalue );
+  //CPU internal buses and signals
+  wire jump_up, jump_down, load_a, load_b, load_r;
+  wire [3:0] jump_distance;
+  wire [7:0] a_out, b_in, b_out, r_in;
+
   //registers
-  register A(clk, rst, load_a, ram_in, a_out); //A reg always fed from RAM
-  register B(clk, rst, load_b, b_input, b_out); 
-  register R(clk, rst, load_r, alu_out, ram_out);
+  datareg A(.clk_i (clk_i),
+            .rst_i (rst_i),
+            .en_i (load_a),
+            .in_i (ram_data_i), //A reg always loaded from RAM
+            .out_o (a_out) );
+  datareg B(.clk_i (clk_i),
+            .rst_i (rst_i),
+            .en_i (load_b),
+            .in_i (b_in),
+            .out_o (b_out) );
+  datareg R(.clk_i (clk_i),
+            .rst_i (rst_i),
+            .en_i (load_r),
+            .in_i (r_in),
+            .out_o (ram_data_o) ); //R reg outputs direct to RAM
 
-  alu ALU(a_out, b_out, ivalue[3:0], alu_out);
+  //program counter
+  pc PC(.clk_i (clk_i), 
+        .rst_i (rst_i), 
+        .jump_up_i (jump_up), 
+        .jump_down_i (jump_down), 
+        .jump_distance_i (jump_distance), 
+        .count_o (p_address_o) );
 
-  //select input for register B, could be immediate value or from RAM
-  assign b_input = (b_immediate) ? ivalue : ram_in;
+  //ALU, calcs based on A and B, results go to R
+  //opcode is always low 4 bits of instruction
+  alu ALU(.a_i (a_out),
+          .b_i (b_out),
+          .op_i (p_data_i[3:0]),
+          .r_o (r_in) );
 
-  //zero test
-  assign r_zero = (ram_out == 0);
+  // contains all the combinatorial logic to control registers, RAM and PC based
+  // on current instruction
+  program_control PCTRL (.instruction_i (p_data_i), //the current instruction
+                         .r_value_i (ram_data_o), //needed for R=0 test
+                         .jump_up_o (jump_up),  //control of PC
+                         .jump_down_o (jump_down),
+                         .jump_distance_o (jump_distance) );
+  data_control DCTRL (.instruction_i (p_data_i), //the current instruction  
+                      .b_value_o (b_in), //B can be ORd with imediate
+                      .b_current_i (b_out),
+                      .load_a_o (load_a),  //controls loading of registers
+                      .load_b_o (load_b),
+                      .load_r_o (load_r),
+                      .ram_wr_o (ram_we_o), //also control RAM write
+                      .ram_data_i (ram_data_i) );
+             
+  //RAM address is always lower 5 bits of instruction (for valid instructions)
+  assign ram_address_o = p_data_i[4:0];
 
 
 endmodule
