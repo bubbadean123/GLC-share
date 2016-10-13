@@ -19,7 +19,7 @@ module kt8();
               .p_address_o (rom_address),
               .p_data_i (rom_data),
               .ram_address_o (ram_address),
-              .ram_data_i (ram_out),
+             .ram_data_i (ram_out),
               .ram_data_o (ram_in),
               .ram_we_o (ram_we) );
 
@@ -48,7 +48,8 @@ module kt8();
                ram_in,
                datamem.mem[0],
                datamem.mem[1] );
-
+     $dumpfile("kt8.dump");
+     $dumpvars();
      rst=1; clk=0;
      #5 rst=0;
      repeat (5) begin
