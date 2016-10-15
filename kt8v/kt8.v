@@ -38,21 +38,23 @@ module kt8();
   //testbench, load a program into ROM and cycle the clock
 
   initial begin
-     $readmemb("testprog.txt", progmem.mem);
+     $readmemb("ram.txt", datamem.mem);
+     $readmemb("reset.txt", progmem.mem);
 
-     $monitor ("PC=%b,I=%b,A=%b,B=%b,R=%b,ram[0]=%h, ram[1]=%h", 
+     $monitor ("PC=%h,I=%b,A=%h,B=%h,R=%h,ram[0]=%h, ram[1]=%h rst=%h", 
 	       rom_address,
                rom_data,
                kt8_cpu.a_out,
                kt8_cpu.b_out,
                ram_in,
                datamem.mem[0],
-               datamem.mem[1] );
+               datamem.mem[1],
+               kt8_cpu.pcrst );
      $dumpfile("kt8.dump");
      $dumpvars();
      rst=1; clk=0;
      #5 rst=0;
-     repeat (5) begin
+     repeat (8) begin
       #5 clk=1;
       #5 clk=0;
      end

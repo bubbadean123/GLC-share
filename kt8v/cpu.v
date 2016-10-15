@@ -22,7 +22,7 @@ module cpu(clk_i,
   output ram_we_o;
 
   //CPU internal buses and signals
-  wire jump_up, jump_down, load_a, load_b, load_r;
+  wire jump_up, jump_down, load_a, load_b, load_r, pcrst, rst;
   wire [3:0] jump_distance;
   wire [7:0] a_out, b_in, b_out, r_in;
 
@@ -45,7 +45,7 @@ module cpu(clk_i,
 
   //program counter
   pc PC(.clk_i (clk_i), 
-        .rst_i (rst_i), 
+        .rst_i (pcrst), 
         .jump_up_i (jump_up), 
         .jump_down_i (jump_down), 
         .jump_distance_i (jump_distance), 
@@ -64,7 +64,8 @@ module cpu(clk_i,
                          .r_value_i (ram_data_o), //needed for R=0 test
                          .jump_up_o (jump_up),  //control of PC
                          .jump_down_o (jump_down),
-                         .jump_distance_o (jump_distance) );
+                         .jump_distance_o (jump_distance),
+                         .rst_o (rst) );
   data_control DCTRL (.instruction_i (p_data_i), //the current instruction  
                       .b_value_o (b_in), //B can be ORd with imediate
                       .b_current_i (b_out),
@@ -76,7 +77,6 @@ module cpu(clk_i,
              
   //RAM address is always lower 5 bits of instruction (for valid instructions)
   assign ram_address_o = p_data_i[4:0];
-
-
+  assign pcrst = rst_i || rst;
 endmodule
                
