@@ -48,17 +48,8 @@ while true
       puts "Setting accumulator to accumulator plus mem[#{addr}]"
       acc=acc+mem[addr]
     when 3
-      if steprun=="s"
-        if in_cards.empty?
-          puts "Stop/Continue(s/c)"
-          temp=gets.chomp
-          if temp=="s"
-            break
-          end
-        end
-      end
       if acc < 0
-        "Accumulator negative, jumping to #{addr}"
+        puts "Accumulator negative, jumping to #{addr}"
         pc = addr
       end
     when 4
@@ -76,15 +67,6 @@ while true
       puts "Setting accumulator to accumulator minus mem[#{addr}]"
       acc=acc-mem[addr]
      when 8
-      if steprun=="s"
-        if in_cards.empty?
-          puts "Stop/Continue(s/c)"
-          temp=gets.chomp
-          if temp=="s"
-            break
-          end
-        end
-      end
       puts "Storing program counter in location 99 and jumping to location #{addr}"
       d=pc.digits.to_a
       mem[99]=d.unshift(8)
@@ -98,6 +80,13 @@ while true
      end
     puts "PC:#{pc}"
     puts "Accumulator:#{acc}"
+    if steprun=="s"
+      puts "Stop/Continue(s/c)"
+      temp=gets.chomp
+      if temp=="s"
+        break
+      end
+    end
   else
     case op
     when 0

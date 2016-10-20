@@ -6,7 +6,8 @@ end
 insset={"INP"=>0,"LOD"=>1,"ADD"=>2,"TAC"=>3,"SFT"=>4,"OUT"=>5,"STO"=>6,"SUB"=>7,"JMP"=>8,"HRS" =>9}
 conv={}
 dat=[]
-labeltable={}
+dlabeltable={}
+plabeltable={}
 memcounter=3
 puts ".asm file:"
 infile = gets.chomp
@@ -19,26 +20,43 @@ outfilef=File.open(outfile,"w")
 outfilef.puts "002"
 outfilef.puts "800"
 infilef.each_line do |line|
+  if line.include? ":"
+    line=line.split(":")
+    dlabeltable[line[0]]=memcounter
+    memcounter += 1
+  else
+    memcounter += 1
+  end
+end
+memcounter=3
+infilef.rewind
+infilef.each_line do |line|
+  oline=line
   line=line.split(" ")
-  puts line.join(" ")
   if line[0] == "DAT"
-    puts "Skipped DAT opcode"
     dat.push(line[1])
     next
   end
-  if line[0] == "MEM"
-    puts "Address and data pair written"
-    outfilef.puts "%03d" % line[1]
-    outfilef.puts line[2].fix(3,"0")
-    next
-  end
-  op=insset[line[0]].to_s
-  if op == ""
-    puts "Invalid opcode"
-    next
+  result = Integer(line[1]) rescue false
+  if result == false
+    if oline.include? ":"
+      sline=oline.split(":")
+      sline[1].chomp!
+      outfilef.puts "%03d" % dlabeltable[sline[0]]
+      outfilef.puts sline[1].fix(3,"0")
+      next
+    else
+      line[1]="%02d" % dlabeltable[line[1]]
+      op=insset[line[0]].to_s
+      if op == ""
+        puts "Invalid opcode"
+        next
+      end
+    end
+  else
+    op=insset[line[0]].to_s
   end
   arg=line[1]
-  puts "Address and op pair written"
   outfilef.puts "%03d" % memcounter
   outfilef.puts op+arg
   memcounter=memcounter+1
@@ -46,6 +64,5 @@ end
 outfilef.puts "002"
 outfilef.puts "803"
 dat.each do |val|
-  puts "Data written"
   outfilef.puts val.fix(3,"0")
 end
