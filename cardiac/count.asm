@@ -1,6 +1,7 @@
-LOD 10
-STO 11
-OUT 11
-ADD 10
+LOD inc
+STO num
+OUT num
+ADD num
 JMP 04
-MEM 10 01
+inc:01
+num:0
