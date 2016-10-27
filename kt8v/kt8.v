@@ -39,26 +39,25 @@ module kt8();
 
   initial begin
      $readmemb("ram.txt", datamem.mem);
-     $readmemb("reset.txt", progmem.mem);
+     $readmemb("fib.txt", progmem.mem);
 
-     $monitor ("PC=%h,I=%b,A=%h,B=%h,R=%h,ram[0]=%h, ram[1]=%h rst=%h", 
-	       rom_address,
+     $dumpfile("kt8.dump");
+     $dumpvars();
+     rst=1; clk=0;
+     #5 rst=0;
+     $monitor ("PC=%h,I=%b,A=%h,B=%h,R=%h,ram[0]=%h,ram[1]=%h,rst=%h", 
+	             rom_address,
                rom_data,
                kt8_cpu.a_out,
                kt8_cpu.b_out,
                ram_in,
                datamem.mem[0],
                datamem.mem[1],
-               kt8_cpu.pcrst );
-     $dumpfile("kt8.dump");
-     $dumpvars();
-     rst=1; clk=0;
-     #5 rst=0;
-     repeat (8) begin
+               rst );
+     while (kt8_cpu.hlt == 0) begin
       #5 clk=1;
       #5 clk=0;
      end
-
   end
 
 endmodule

@@ -21,8 +21,9 @@ module alu(a_i,
       8: r_o=b_i;
       9: r_o=a_i<<1;
      10: r_o=a_i>>1;
-     11: r_o=a_i+1;
-     12: r_o=a_i-1;
+     11: r_o=0;
+     12: r_o=a_i+1;
+     13: r_o=a_i-1;
      default: r_o=0;
    endcase
 endmodule

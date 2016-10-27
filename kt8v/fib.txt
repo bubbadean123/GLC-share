@@ -1,0 +1,20 @@
+0110_0001 //0: LOWBITS 1 - load 1 into data[0] and data[1]
+1000_1000 //1: PASSB
+0100_0000 //2: SAVE 0 
+0100_0001 //3: SAVE 1
+0110_1010 //4: LOWBITS 10 - load 10 in data[2] (counter)
+1000_1000 //5: PASSB
+0100_0010 //6: SAVE 2
+//start of loop
+0000_0000 //7: LOADA 0
+0010_0001 //8: LOADB 1
+1000_0000 //9: ADD
+0100_0001 //A: STORE 1 - new sum is last in fib series
+1000_1000 //B: PASSB
+0100_0000 //C: STORE 0 - put new next to last (old last) into location 0
+0000_0010 //D: LOADA 2 - load the counter into A
+1000_1101 //E: DEC - count down
+0100_0010 //F: SAVE 2 -store decremnted count back to data[2]
+1110_0000 //10: SKIPZ - if counter is zero, skip out of the loop
+1101_1010 //11: BJMP A - back to 7
+1111_0001 //12: HALT 

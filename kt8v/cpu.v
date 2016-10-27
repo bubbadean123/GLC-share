@@ -22,29 +22,29 @@ module cpu(clk_i,
   output ram_we_o;
 
   //CPU internal buses and signals
-  wire jump_up, jump_down, load_a, load_b, load_r, pcrst, rst;
+  wire jump_up, jump_down, load_a, load_b, load_r, pcrst, rst, hlt;
   wire [3:0] jump_distance;
   wire [7:0] a_out, b_in, b_out, r_in;
 
   //registers
-  datareg A(.clk_i (clk_i),
+  datareg A(.clk_i (clk),
             .rst_i (rst_i),
             .en_i (load_a),
             .in_i (ram_data_i), //A reg always loaded from RAM
             .out_o (a_out) );
-  datareg B(.clk_i (clk_i),
+  datareg B(.clk_i (clk),
             .rst_i (rst_i),
             .en_i (load_b),
             .in_i (b_in),
             .out_o (b_out) );
-  datareg R(.clk_i (clk_i),
+  datareg R(.clk_i (clk),
             .rst_i (rst_i),
             .en_i (load_r),
             .in_i (r_in),
             .out_o (ram_data_o) ); //R reg outputs direct to RAM
 
   //program counter
-  pc PC(.clk_i (clk_i), 
+  pc PC(.clk_i (clk), 
         .rst_i (pcrst), 
         .jump_up_i (jump_up), 
         .jump_down_i (jump_down), 
@@ -62,10 +62,12 @@ module cpu(clk_i,
   // on current instruction
   program_control PCTRL (.instruction_i (p_data_i), //the current instruction
                          .r_value_i (ram_data_o), //needed for R=0 test
+                         .rst_i (rst_i),
                          .jump_up_o (jump_up),  //control of PC
                          .jump_down_o (jump_down),
                          .jump_distance_o (jump_distance),
-                         .rst_o (rst) );
+                         .rst_o (rst), 
+                         .hlt_o (hlt) );
   data_control DCTRL (.instruction_i (p_data_i), //the current instruction  
                       .b_value_o (b_in), //B can be ORd with imediate
                       .b_current_i (b_out),
@@ -78,5 +80,6 @@ module cpu(clk_i,
   //RAM address is always lower 5 bits of instruction (for valid instructions)
   assign ram_address_o = p_data_i[4:0];
   assign pcrst = rst_i || rst;
+  assign clk = ~hlt && clk_i;
 endmodule
                
