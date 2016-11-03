@@ -1,0 +1,53 @@
+JMP start
+hello: DB "Hello!" ; Variable
+       DB 0	; String terminator.
+howareyou:  DB "How are you?"
+       DB 0
+
+start:
+	MOV C, hello    ; Point to hello variable. 
+	CALL print 	; Print the string.
+	CALL clear	; Clear the screen.
+	MOV C, howareyou
+	CALL print
+	CALL clear
+        HLT             ; Stop execution.
+
+print:			; print(C:*string).
+	PUSH A
+	PUSH B
+	PUSH C
+        PUSH D
+        MOV D, 0xE8	; Point to the output.
+	MOV B, 0
+ploop:
+	MOV A, [C]	; Get character to write from the string.
+	MOV [D], A	; Write it to the output.
+	INC C		; Go to the next character.
+	INC D  
+	CMP B, [C]	; If we have reached the end, exit.
+	JNZ ploop	; If not, repeat the loop.
+		
+	POP D
+	POP C
+	POP B
+	POP A
+	RET
+
+clear:
+	PUSH D
+	PUSH A
+	MOV D, 232
+cloop:
+	CMP D, 0 	; Have we cleared everything?
+	JZ cdone	; If so, we are done.
+	MOV A, [D]	; Prepare for the comparison.
+	CMP A, 0	; Is the location 0(End of string)?
+	JZ cdone	; If so, we can stop early.
+	MOV [D], 0	; Clear the location and move on.
+	INC D
+	JMP cloop	; Repeat the loop.
+cdone:
+	POP A
+	POP D
+	RET
