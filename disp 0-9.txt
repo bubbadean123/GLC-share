@@ -1,0 +1,14 @@
+JMP .start
+.start: MOV C,0xE8 //Set C to start address of output
+loop: INC A //Increment A
+CALL convnum
+MOV [C],D //Display the digit.
+INC C //Move to the next character in the output.
+JNC loop
+
+convnum:MOV D,A //Move A to D
+ADD D,0x30 //Convert D to ASCII equivalent of the number
+CMP D,0x3A 
+JZ hlt //If attempt to convert 10 occurred, halt, since we can only display 0-9.
+RET
+hlt:HLT

@@ -1,0 +1,67 @@
+JMP start
+btares: DB 0
+	DB 0
+start:
+	MOV D, btares
+	MOV A, 0xF0
+loop: 
+	INC A
+	CALL bta
+	MOV C, D
+	CALL print
+	CMP A, 255
+	JNZ loop
+	HLT
+
+print:			; print(C:*string).
+	PUSH A
+	PUSH B
+	PUSH C
+        PUSH D
+        MOV D, 0xE8	; Point to the output.
+	MOV B, 0
+ploop:
+	MOV A, [C]	; Get character to write from the string.
+	MOV [D], A	; Write it to the output.
+	INC C		; Go to the next character.
+	INC D  
+	CMP B, [C]	; If we have reached the end, exit.
+	JNZ ploop	; If not, repeat the loop.
+		
+	POP D
+	POP C
+	POP B
+	POP A
+	RET
+
+nta:
+	CMP A, 0xA
+	JC nnum
+	ADD A, 0x37
+	RET
+nnum:	
+	ADD A,0x30
+	RET
+
+bta:
+	PUSH A
+	PUSH B
+	PUSH C
+	PUSH D
+bmain:
+	PUSH A
+	SHR A, 4
+	CALL nta
+	MOV B,A
+	POP A
+	AND A, 0xF
+	CALL nta
+	MOV C,A
+	MOV [D], B
+	INC D
+	MOV [D], C
+	POP D
+	POP C
+	POP B
+	POP A
+	RET
