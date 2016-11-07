@@ -3,7 +3,7 @@ btares: DB 0
 	DB 0
 start:
 	MOV D, btares
-	MOV A, 0xF0
+	MOV A, 0x0
 loop: 
 	INC A
 	CALL bta

@@ -37,10 +37,10 @@ ploop:
 clear:
 	PUSH D
 	PUSH A
-	MOV D, 232
+	MOV D, 0xE8	; Point to the output.
 cloop:
 	CMP D, 0 	; Have we cleared everything?
-	JZ cdone	; If so, we are done.
+	JZ cdone	; If so, we are done.	
 	MOV A, [D]	; Prepare for the comparison.
 	CMP A, 0	; Is the location 0(End of string)?
 	JZ cdone	; If so, we can stop early.
