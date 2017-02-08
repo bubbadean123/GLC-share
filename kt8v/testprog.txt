@@ -1,8 +1,0 @@
-//test program for KT8
-
-0110_0111  //load 7 into B lower bits
-0111_0001  //load 16 into upper bits (total 23)
-1000_1000  //swap B and R (I think this only moves B to R)
-0100_0001  //load R (23) to RAM address 1
-0000_0001  //load RAM address 1 (23) to A 
-1111_0000 //Reset
