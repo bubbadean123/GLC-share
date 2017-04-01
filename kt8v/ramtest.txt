@@ -1,7 +1,0 @@
-//for testing KT8 ram
-F0
-F1
-F2
-F3
-F4
-

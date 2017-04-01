@@ -1,0 +1,35 @@
+start:
+	MOV A, 0x21
+init:
+	CALL clear
+	MOV D, 0xE8
+loop:
+	CMP A, 0x7F	; Have we displayed the last character?
+	JZ done		; If so, we are done.
+	CMP D, 0 	; Have we displayed the max amount?
+	JZ init		; If so, clear the screen and reset D.
+	MOV [D], A
+	INC A
+	INC D
+	JMP loop
+done:
+	CALL clear
+	HLT
+
+clear:
+	PUSH D
+	PUSH A
+	MOV D, 232
+cloop:
+	CMP D, 0 	; Have we cleared everything?
+	JZ cdone	; If so, we are done.
+	MOV A, [D]	; Prepare for the comparison.
+	CMP A, 0	; Is the location 0(End of string)?
+	JZ cdone	; If so, we can stop early.
+	MOV [D], 0	; Clear the location and move on.
+	INC D
+	JMP cloop	; Repeat the loop.
+cdone:
+	POP A
+	POP D
+	RET
